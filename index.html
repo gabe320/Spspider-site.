@@ -1,222 +1,118 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#080609">
-  <meta name="description" content="SPIDER.COM Lua source workspace">
-  <title>SPIDER.COM — Lua Workspace</title>
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #080609;
-      --panel: #151116;
-      --panel-edge: #38202a;
-      --red: #ff263f;
-      --red-bright: #ff4961;
-      --muted: #b7aab0;
-      --green: #81ffb1;
-    }
-    * { box-sizing: border-box; }
-    body {
-      min-height: 100vh;
-      margin: 0;
-      color: #fff;
-      background: radial-gradient(ellipse at 50% 0%, #32101c 0, var(--bg) 42rem);
-      font-family: Arial, Helvetica, sans-serif;
-    }
-    header { padding: clamp(2rem, 8vw, 4.5rem) 1rem 2rem; text-align: center; }
-    h1 {
-      margin: 0;
-      color: var(--red-bright);
-      font-size: clamp(2.4rem, 9vw, 3.5rem);
-      letter-spacing: .06em;
-      text-shadow: 0 0 10px #ff263f99, 0 0 30px #ff263f66;
-    }
-    header p { margin: .7rem 0 0; color: var(--muted); }
-    main { width: min(100% - 2rem, 850px); margin: 0 auto 3rem; }
-    .panel {
-      margin-bottom: 1.25rem;
-      padding: clamp(1rem, 4vw, 1.5rem);
-      border: 1px solid var(--panel-edge);
-      border-radius: 16px;
-      background: linear-gradient(145deg, #1a141a, var(--panel));
-      box-shadow: 0 0 24px #ff183010, inset 0 1px #ffffff08;
-    }
-    h2 { margin: 0 0 1rem; font-size: 1.05rem; letter-spacing: .09em; }
-    .source-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem; margin-bottom: .85rem; }
-    button, .file-button {
-      min-height: 44px;
-      padding: .75rem 1rem;
-      border: 1px solid transparent;
-      border-radius: 8px;
-      background: var(--red);
-      color: white;
-      font: inherit;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background .15s ease, box-shadow .15s ease, transform .15s ease;
-    }
-    button:hover, .file-button:hover { background: var(--red-bright); box-shadow: 0 0 18px #ff263f66; }
-    button:active, .file-button:active { transform: translateY(1px); }
-    button:focus-visible, .file-button:focus-visible, textarea:focus-visible { outline: 2px solid white; outline-offset: 3px; }
-    button:disabled { cursor: wait; opacity: .7; }
-    .secondary { border-color: #58313b; background: #21171d; }
-    .secondary:hover { background: #34212a; }
-    input[type="file"] {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      clip-path: inset(50%);
-    }
-    textarea {
-      display: block;
-      width: 100%;
-      min-height: 220px;
-      padding: 1rem;
-      resize: vertical;
-      border: 1px solid #49313a;
-      border-radius: 10px;
-      background: #0b090c;
-      color: var(--green);
-      font: 14px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace;
-      tab-size: 2;
-    }
-    textarea::placeholder { color: #8e8087; }
-    #output { color: #e6dce1; }
-    .buttons { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: 1rem; }
-    .notice { margin: .85rem 0 0; color: var(--muted); font-size: .9rem; line-height: 1.5; }
-    .status { min-height: 1.4em; margin: .8rem 0 0; color: #ffd1d8; font-size: .9rem; }
-    @media (max-width: 480px) {
-      main { width: min(100% - 1rem, 850px); }
-      .panel { padding: 1rem; }
-      .buttons button, .source-actions .file-button { flex: 1 1 100%; text-align: center; }
-      textarea { min-height: 190px; }
-    }
-    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SPIDER.COM | Lua Protection</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#090909;color:white;font-family:Arial,sans-serif}
+header{padding:22px 7%;border-bottom:1px solid #292020;display:flex;align-items:center;gap:12px}
+.logo{background:#c40024;color:white;padding:12px;border-radius:10px;font-weight:bold}
+header h2{letter-spacing:3px}
+main{max-width:950px;margin:65px auto;padding:20px}
+h1{font-size:42px}
+.red{color:#ed173d}
+p{color:#aaa;line-height:1.6}
+.panel{background:#151111;border:1px solid #392027;border-radius:14px;padding:22px;margin-top:28px}
+textarea{width:100%;height:190px;background:#090909;color:#eee;border:1px solid #493038;border-radius:9px;padding:15px;font-family:monospace;font-size:14px;resize:vertical}
+button{background:#c40024;color:white;border:0;padding:15px 22px;border-radius:8px;font-weight:bold;margin-top:15px;width:100%;font-size:15px}
+button:active{background:#850019}
+small{color:#888}
+footer{text-align:center;padding:35px;color:#777}
+</style>
 </head>
 <body>
-  <header>
-    <h1>🕷 SPIDER.COM</h1>
-    <p>Lua Protection &amp; Obfuscation</p>
-  </header>
-  <main>
-    <section class="panel" aria-labelledby="source-heading">
-      <h2 id="source-heading">YOUR LUA SOURCE</h2>
-      <div class="source-actions">
-        <label class="file-button" for="file">CHOOSE .LUA FILE</label>
-        <input type="file" id="file" accept=".lua,text/plain" aria-label="Choose a Lua file">
-        <span id="file-name" class="notice" aria-live="polite">No file selected</span>
-      </div>
-      <textarea id="source" spellcheck="false" placeholder="Paste your Lua script here..." aria-label="Lua source"></textarea>
-    </section>
-
-    <section class="panel" aria-labelledby="output-heading">
-      <h2 id="output-heading">PROTECTED OUTPUT</h2>
-      <textarea id="output" readonly spellcheck="false" placeholder="Your protected script will appear here..." aria-label="Protected output"></textarea>
-      <div class="buttons">
-        <button type="button" id="obfuscate">OBFUSCATE</button>
-        <button type="button" class="secondary" id="copy">COPY</button>
-        <button type="button" class="secondary" id="clear">CLEAR</button>
-      </div>
-      <p id="status" class="status" role="status" aria-live="polite"></p>
-    </section>
-  </main>
-
-  <script>
-    const API_URL = 'https://spider-backend.mathiangchiech.workers.dev/upload';
-    const fileInput = document.getElementById('file');
-    const source = document.getElementById('source');
-    const output = document.getElementById('output');
-    const status = document.getElementById('status');
-    const obfuscateButton = document.getElementById('obfuscate');
-
-    fileInput.addEventListener('change', () => {
-      const file = fileInput.files && fileInput.files[0];
-      if (!file) return;
-      document.getElementById('file-name').textContent = file.name;
-      const reader = new FileReader();
-      reader.addEventListener('load', () => {
-        source.value = typeof reader.result === 'string' ? reader.result : '';
-        status.textContent = 'Lua file loaded.';
-      });
-      reader.addEventListener('error', () => {
-        status.textContent = 'Could not read that file. Please try again.';
-      });
-      reader.readAsText(file);
-    });
-
-    obfuscateButton.addEventListener('click', async () => {
-      const luaSource = source.value;
-      if (!luaSource.trim()) {
-        status.textContent = 'Add or upload a Lua script first.';
-        return;
-      }
-
-      output.value = '';
-      status.textContent = 'Uploading source to the obfuscation service…';
-      obfuscateButton.disabled = true;
-
-      try {
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ source: luaSource })
-        });
-
-        let result;
-        try {
-          result = await response.json();
-        } catch {
-          throw new Error('The server returned an invalid response.');
-        }
-
-        if (!response.ok) {
-          const detail = typeof result.error === 'string' ? result.error : `Request failed (${response.status}).`;
-          throw new Error(detail);
-        }
-        if (typeof result.loadstring !== 'string' || !result.loadstring.trim()) {
-          throw new Error('The server response did not contain a valid loadstring.');
-        }
-
-        output.value = result.loadstring;
-        status.textContent = 'Obfuscation completed successfully.';
-      } catch (error) {
-        output.value = '';
-        status.textContent = `Obfuscation failed: ${error.message || 'Could not connect to the service.'}`;
-      } finally {
-        obfuscateButton.disabled = false;
-      }
-    });
-
-    document.getElementById('copy').addEventListener('click', async () => {
-      if (!output.value) {
-        status.textContent = 'There is no output to copy.';
-        return;
-      }
-      try {
-        await navigator.clipboard.writeText(output.value);
-        status.textContent = 'Output copied.';
-      } catch (error) {
-        output.focus();
-        output.select();
-        const copied = document.execCommand('copy');
-        status.textContent = copied ? 'Output copied.' : 'Copy failed. Select the output and copy it manually.';
-      }
-    });
-
-    document.getElementById('clear').addEventListener('click', () => {
-      source.value = '';
-      output.value = '';
-      fileInput.value = '';
-      document.getElementById('file-name').textContent = 'No file selected';
-      status.textContent = 'Source and output cleared.';
-    });
-  </script>
+<header>
+<div class="logo">S</div>
+<h2>SPIDER<span class="red">.COM</span></h2>
+</header>
+<main>
+<h1>Protect Your <span class="red">Lua Code.</span></h1>
+<p>Welcome to Spider. An independent Lua code protection project.</p>
+<div class="panel">
+<h3>Lua Obfuscator</h3>
+<p>Paste your Lua source code below.</p>
+<textarea id="source" placeholder="-- Paste your Lua code here..."></textarea>
+<button onclick="protectCode()">OBFUSCATE CODE</button>
+<h3>Output</h3>
+<textarea id="output" readonly placeholder="Your protected code will appear here..."></textarea>
+<button onclick="copyCode()">COPY OUTPUT</button>
+<small id="status">Protection engine is not connected yet.</small>
+</div>
+</main>
+<footer>SPIDER.COM · INDEPENDENT PROJECT</footer>
+<script>
+function protectCode(){
+const code=document.getElementById('source').value;
+if(!code.trim()){document.getElementById('status').textContent='Paste some Lua code first.';return;}
+document.getElementById('status').textContent='Obfuscation engine is not installed yet. Your source has not been changed.';
+}
+function copyCode(){
+const output=document.getElementById('output');
+if(output.value)navigator.clipboard.writeText(output.value);
+}
+</script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SPIDER.COM | Lua Protection</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#090909;color:white;font-family:Arial,sans-serif}
+header{padding:22px 7%;border-bottom:1px solid #292020;display:flex;align-items:center;gap:12px}
+.logo{background:#c40024;color:white;padding:12px;border-radius:10px;font-weight:bold}
+header h2{letter-spacing:3px}
+main{max-width:950px;margin:65px auto;padding:20px}
+h1{font-size:42px}
+.red{color:#ed173d}
+p{color:#aaa;line-height:1.6}
+.panel{background:#151111;border:1px solid #392027;border-radius:14px;padding:22px;margin-top:28px}
+textarea{width:100%;height:190px;background:#090909;color:#eee;border:1px solid #493038;border-radius:9px;padding:15px;font-family:monospace;font-size:14px;resize:vertical}
+button{background:#c40024;color:white;border:0;padding:15px 22px;border-radius:8px;font-weight:bold;margin-top:15px;width:100%;font-size:15px}
+button:active{background:#850019}
+small{color:#888}
+footer{text-align:center;padding:35px;color:#777}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">S</div>
+<h2>SPIDER<span class="red">.COM</span></h2>
+</header>
+<main>
+<h1>Protect Your <span class="red">Lua Code.</span></h1>
+<p>Welcome to Spider. An independent Lua code protection project.</p>
+<div class="panel">
+<h3>Lua Obfuscator</h3>
+<p>Paste your Lua source code below.</p>
+<textarea id="source" placeholder="-- Paste your Lua code here..."></textarea>
+<button onclick="protectCode()">OBFUSCATE CODE</button>
+<h3>Output</h3>
+<textarea id="output" readonly placeholder="Your protected code will appear here..."></textarea>
+<button onclick="copyCode()">COPY OUTPUT</button>
+<small id="status">Protection engine is not connected yet.</small>
+</div>
+</main>
+<footer>SPIDER.COM · INDEPENDENT PROJECT</footer>
+<script>
+function protectCode(){
+const code=document.getElementById('source').value;
+if(!code.trim()){document.getElementById('status').textContent='Paste some Lua code first.';return;}
+document.getElementById('status').textContent='Obfuscation engine is not installed yet. Your source has not been changed.';
+}
+function copyCode(){
+const output=document.getElementById('output');
+if(output.value)navigator.clipboard.writeText(output.value);
+}
+</script>
+</body>
+</html>
+
+
