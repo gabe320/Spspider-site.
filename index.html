@@ -60,6 +60,7 @@
     button:hover, .file-button:hover { background: var(--red-bright); box-shadow: 0 0 18px #ff263f66; }
     button:active, .file-button:active { transform: translateY(1px); }
     button:focus-visible, .file-button:focus-visible, textarea:focus-visible { outline: 2px solid white; outline-offset: 3px; }
+    button:disabled { cursor: wait; opacity: .7; }
     .secondary { border-color: #58313b; background: #21171d; }
     .secondary:hover { background: #34212a; }
     input[type="file"] {
@@ -117,8 +118,7 @@
 
     <section class="panel" aria-labelledby="output-heading">
       <h2 id="output-heading">PROTECTED OUTPUT</h2>
-      <textarea id="output" readonly spellcheck="false" placeholder="Output will appear here when an obfuscation engine is connected..." aria-label="Protected output"></textarea>
-      <p class="notice">A real Lua obfuscation engine is not connected. OBFUSCATE will not generate or pretend to generate protected code.</p>
+      <textarea id="output" readonly spellcheck="false" placeholder="Your protected script will appear here..." aria-label="Protected output"></textarea>
       <div class="buttons">
         <button type="button" id="obfuscate">OBFUSCATE</button>
         <button type="button" class="secondary" id="copy">COPY</button>
@@ -129,10 +129,12 @@
   </main>
 
   <script>
+    const API_URL = 'https://spider-backend.mathiangchiech.workers.dev/upload';
     const fileInput = document.getElementById('file');
     const source = document.getElementById('source');
     const output = document.getElementById('output');
     const status = document.getElementById('status');
+    const obfuscateButton = document.getElementById('obfuscate');
 
     fileInput.addEventListener('change', () => {
       const file = fileInput.files && fileInput.files[0];
@@ -149,13 +151,47 @@
       reader.readAsText(file);
     });
 
-    document.getElementById('obfuscate').addEventListener('click', () => {
-      if (!source.value.trim()) {
+    obfuscateButton.addEventListener('click', async () => {
+      const luaSource = source.value;
+      if (!luaSource.trim()) {
         status.textContent = 'Add or upload a Lua script first.';
         return;
       }
+
       output.value = '';
-      status.textContent = 'A real Lua obfuscation engine is not connected, so no output was generated.';
+      status.textContent = 'Uploading source to the obfuscation service…';
+      obfuscateButton.disabled = true;
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ source: luaSource })
+        });
+
+        let result;
+        try {
+          result = await response.json();
+        } catch {
+          throw new Error('The server returned an invalid response.');
+        }
+
+        if (!response.ok) {
+          const detail = typeof result.error === 'string' ? result.error : `Request failed (${response.status}).`;
+          throw new Error(detail);
+        }
+        if (typeof result.loadstring !== 'string' || !result.loadstring.trim()) {
+          throw new Error('The server response did not contain a valid loadstring.');
+        }
+
+        output.value = result.loadstring;
+        status.textContent = 'Obfuscation completed successfully.';
+      } catch (error) {
+        output.value = '';
+        status.textContent = `Obfuscation failed: ${error.message || 'Could not connect to the service.'}`;
+      } finally {
+        obfuscateButton.disabled = false;
+      }
     });
 
     document.getElementById('copy').addEventListener('click', async () => {
