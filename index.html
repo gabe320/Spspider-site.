@@ -1,187 +1,118 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPIDER.COM</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SPIDER.COM | Lua Protection</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#090909;color:#fff;font-family:Arial,sans-serif}
-header{height:70px;padding:0 7%;display:flex;align-items:center;
-justify-content:space-between;border-bottom:1px solid #252525}
-.logo{font-size:23px;font-weight:900;letter-spacing:2px}
-.logo span{color:#ed2525}
-.menu{font-size:27px;cursor:pointer}
-nav{display:none;background:#151515;padding:20px 7%;border-bottom:1px solid #333}
-nav a{display:block;color:white;text-decoration:none;padding:12px 0}
-main{max-width:950px;margin:auto;padding:55px 20px}
-.hero{text-align:center;margin-bottom:45px}
-.hero h1{font-size:42px;margin:0 0 12px}
-.hero h1 span{color:#ed2525}
-.hero p{color:#aaa;line-height:1.6}
-.panel{background:#121212;border:1px solid #292929;
-border-radius:14px;padding:25px;margin-bottom:22px}
-.panel h2{margin-top:0}
-label{display:block;margin:18px 0 8px;color:#ddd;font-size:14px}
-input,textarea{width:100%;background:#080808;color:white;
-border:1px solid #393939;border-radius:8px;padding:13px;font-size:15px}
-textarea{min-height:190px;resize:vertical;font-family:monospace}
-input:focus,textarea:focus{outline:1px solid #ed2525}
-button{background:#e52424;color:white;border:0;border-radius:8px;
-padding:13px 18px;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.5;cursor:not-allowed}
-.upload{width:100%;margin-top:18px;font-size:15px}
-.secondary{background:#292929;margin-top:10px}
-.status{margin-top:15px;color:#aaa;line-height:1.5;overflow-wrap:anywhere}
-.output{display:none;margin-top:20px}
-.output textarea{min-height:90px}
-.note{font-size:12px;color:#888;line-height:1.6}
-footer{text-align:center;color:#666;padding:30px;border-top:1px solid #222}
-@media(max-width:600px){
-.hero h1{font-size:32px}
-.panel{padding:19px}
-}
+body{margin:0;background:#090909;color:white;font-family:Arial,sans-serif}
+header{padding:22px 7%;border-bottom:1px solid #292020;display:flex;align-items:center;gap:12px}
+.logo{background:#c40024;color:white;padding:12px;border-radius:10px;font-weight:bold}
+header h2{letter-spacing:3px}
+main{max-width:950px;margin:65px auto;padding:20px}
+h1{font-size:42px}
+.red{color:#ed173d}
+p{color:#aaa;line-height:1.6}
+.panel{background:#151111;border:1px solid #392027;border-radius:14px;padding:22px;margin-top:28px}
+textarea{width:100%;height:190px;background:#090909;color:#eee;border:1px solid #493038;border-radius:9px;padding:15px;font-family:monospace;font-size:14px;resize:vertical}
+button{background:#c40024;color:white;border:0;padding:15px 22px;border-radius:8px;font-weight:bold;margin-top:15px;width:100%;font-size:15px}
+button:active{background:#850019}
+small{color:#888}
+footer{text-align:center;padding:35px;color:#777}
 </style>
 </head>
 <body>
-
 <header>
-<div class="logo"><span>S</span>PIDER.COM</div>
-<div class="menu" onclick="toggleMenu()">☰</div>
+<div class="logo">S</div>
+<h2>SPIDER<span class="red">.COM</span></h2>
 </header>
-
-<nav id="menu">
-<a href="#home">Home</a>
-<a href="#upload">Upload Lua</a>
-<a href="#guide">How It Works</a>
-<a href="pricing.html">Pricing</a>
-</nav>
-
-<main id="home">
-
-<section class="hero">
-<h1>WELCOME TO <span>SPIDER</span></h1>
-<p>Upload and manage your Lua scripts from one place.</p>
-</section>
-
-<section class="panel" id="upload">
-<h2>Upload Your Lua</h2>
-<p class="note">Give your script a name, choose a Lua file or paste your source, then upload it.</p>
-
-<label for="scriptName">Script Name</label>
-<input id="scriptName" type="text" placeholder="My Lua Script">
-
-<label for="luaFile">Choose Lua File</label>
-<input id="luaFile" type="file" accept=".lua,.txt">
-
-<label for="source">Or Paste Lua Source</label>
-<textarea id="source" placeholder="Paste your Lua source here..."></textarea>
-
-<button class="upload" id="uploadBtn" onclick="uploadScript()">UPLOAD SOURCE</button>
-
-<div class="status" id="status"></div>
-
-<div class="output" id="output">
-<h3>YOUR GET SCRIPT</h3>
-<textarea id="loader" readonly></textarea>
-<button class="upload" onclick="copyLoader()">COPY LOADSTRING</button>
+<main>
+<h1>Protect Your <span class="red">Lua Code.</span></h1>
+<p>Welcome to Spider. An independent Lua code protection project.</p>
+<div class="panel">
+<h3>Lua Obfuscator</h3>
+<p>Paste your Lua source code below.</p>
+<textarea id="source" placeholder="-- Paste your Lua code here..."></textarea>
+<button onclick="protectCode()">OBFUSCATE CODE</button>
+<h3>Output</h3>
+<textarea id="output" readonly placeholder="Your protected code will appear here..."></textarea>
+<button onclick="copyCode()">COPY OUTPUT</button>
+<small id="status">Protection engine is not connected yet.</small>
 </div>
-</section>
-
-<section class="panel" id="guide">
-<h2>How It Works</h2>
-<p>1. Enter a name for your script.</p>
-<p>2. Choose a Lua file or paste your source.</p>
-<p>3. Press Upload Source.</p>
-<p>4. If the upload succeeds, your returned loader will appear.</p>
-<p class="note">More account, panel ownership, whitelist, and plan features require backend support.</p>
-</section>
-
 </main>
-
-<footer>
-SPIDER.COM · Lua Script Hosting
-</footer>
-
+<footer>SPIDER.COM · INDEPENDENT PROJECT</footer>
 <script>
-const API = "https://spider-backend.mathiangchiech.workers.dev";
-
-function toggleMenu(){
-  const menu=document.getElementById("menu");
-  menu.style.display=menu.style.display==="block"?"none":"block";
+function protectCode(){
+const code=document.getElementById('source').value;
+if(!code.trim()){document.getElementById('status').textContent='Paste some Lua code first.';return;}
+document.getElementById('status').textContent='Obfuscation engine is not installed yet. Your source has not been changed.';
 }
-
-document.getElementById("luaFile").addEventListener("change",async function(){
-  const file=this.files[0];
-  if(!file)return;
-  document.getElementById("source").value=await file.text();
-  if(!document.getElementById("scriptName").value){
-    document.getElementById("scriptName").value=file.name.replace(/\.lua$/i,"");
-  }
-});
-
-async function uploadScript(){
-  const source=document.getElementById("source").value.trim();
-  const name=document.getElementById("scriptName").value.trim();
-  const status=document.getElementById("status");
-  const button=document.getElementById("uploadBtn");
-  const output=document.getElementById("output");
-
-  output.style.display="none";
-
-  if(!name){
-    status.textContent="Please enter a script name.";
-    return;
-  }
-  if(!source){
-    status.textContent="Please choose a Lua file or paste your source.";
-    return;
-  }
-
-  button.disabled=true;
-  status.textContent="Uploading your script...";
-
-  try{
-    const response=await fetch(API+"/upload",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({source:source})
-    });
-
-    const data=await response.json();
-
-    if(!response.ok){
-      throw new Error(data.error||data.message||"Upload failed.");
-    }
-
-    const loader=data.loadstring||data.loader||data.loadString;
-
-    if(!loader){
-      throw new Error("Upload response did not include a loadstring. Check the backend response.");
-    }
-
-    document.getElementById("loader").value=loader;
-    output.style.display="block";
-    status.textContent="Upload successful: "+name;
-  }catch(error){
-    status.textContent="Error: "+error.message;
-  }finally{
-    button.disabled=false;
-  }
-}
-
-async function copyLoader(){
-  const loader=document.getElementById("loader");
-  try{
-    await navigator.clipboard.writeText(loader.value);
-    document.getElementById("status").textContent="Loadstring copied!";
-  }catch(error){
-    loader.select();
-    document.execCommand("copy");
-    document.getElementById("status").textContent="Loadstring copied!";
-  }
+function copyCode(){
+const output=document.getElementById('output');
+if(output.value)navigator.clipboard.writeText(output.value);
 }
 </script>
-
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SPIDER.COM | Lua Protection</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#090909;color:white;font-family:Arial,sans-serif}
+header{padding:22px 7%;border-bottom:1px solid #292020;display:flex;align-items:center;gap:12px}
+.logo{background:#c40024;color:white;padding:12px;border-radius:10px;font-weight:bold}
+header h2{letter-spacing:3px}
+main{max-width:950px;margin:65px auto;padding:20px}
+h1{font-size:42px}
+.red{color:#ed173d}
+p{color:#aaa;line-height:1.6}
+.panel{background:#151111;border:1px solid #392027;border-radius:14px;padding:22px;margin-top:28px}
+textarea{width:100%;height:190px;background:#090909;color:#eee;border:1px solid #493038;border-radius:9px;padding:15px;font-family:monospace;font-size:14px;resize:vertical}
+button{background:#c40024;color:white;border:0;padding:15px 22px;border-radius:8px;font-weight:bold;margin-top:15px;width:100%;font-size:15px}
+button:active{background:#850019}
+small{color:#888}
+footer{text-align:center;padding:35px;color:#777}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">S</div>
+<h2>SPIDER<span class="red">.COM</span></h2>
+</header>
+<main>
+<h1>Protect Your <span class="red">Lua Code.</span></h1>
+<p>Welcome to Spider. An independent Lua code protection project.</p>
+<div class="panel">
+<h3>Lua Obfuscator</h3>
+<p>Paste your Lua source code below.</p>
+<textarea id="source" placeholder="-- Paste your Lua code here..."></textarea>
+<button onclick="protectCode()">OBFUSCATE CODE</button>
+<h3>Output</h3>
+<textarea id="output" readonly placeholder="Your protected code will appear here..."></textarea>
+<button onclick="copyCode()">COPY OUTPUT</button>
+<small id="status">Protection engine is not connected yet.</small>
+</div>
+</main>
+<footer>SPIDER.COM · INDEPENDENT PROJECT</footer>
+<script>
+function protectCode(){
+const code=document.getElementById('source').value;
+if(!code.trim()){document.getElementById('status').textContent='Paste some Lua code first.';return;}
+document.getElementById('status').textContent='Obfuscation engine is not installed yet. Your source has not been changed.';
+}
+function copyCode(){
+const output=document.getElementById('output');
+if(output.value)navigator.clipboard.writeText(output.value);
+}
+</script>
+</body>
+</html>
+
+
